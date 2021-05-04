@@ -1,0 +1,91 @@
+%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%
+
+\chapter{Review of Key Concepts from Statistics}
+\section{Probability}
+Suppose that you are throwing a fair dice twice, and that you keep track of what number you get for each throw. The possible outcome for each throw is
+\[
+\{(1,1),(1,2),...,(1,6),(2,1),...,(2,6),...,(6,6)\}
+\]
+The collection of every possible outcome is defined as a \textbf{sample space}, or a \textbf{population}. An \textbf{event} refers to a subset of the sample space. For instance, the event that you would be interested in might be the appearance of an odd number on the first throw and so on. They are called \textbf{mutually exclusive} if occurrence of one event prevents another event from occurring. An example of an mutually exclusive event to the aforementioned example would be an appearance of an even number on the first throw. When we consider the union of the two events, there is no other possible event, which makes the union an \textbf{exhaustive event}. \par\medskip\medskip
+
+A \textbf{probability} of an event $A$, denoted as $P(A)$ or $\Pr(A)$, is the proportion of times the event $A$ occurs in repeated trials of an experiment. They satisfy
+\begin{itemize}
+\item $0\leq\Pr(A)\leq1$
+\item If $A_1,..,A_n$ are mutually exclusive, $\Pr(A_1\cup ... \cup A_n)=\Pr(A_1)+...+\Pr(A_n)$
+\item If $A_1,..,A_n$ are exhaustive, then $\Pr(A_1\cup ... \cup A_n)=1$
+\end{itemize} \par\medskip\medskip
+A \textbf{random variable} $X$ is a function defined such that the sample space acts as a domain and the set of numbers is the range. The random variable numerically describes the outcome of an experiment. For instance, $X$ could be defined as the sum of the two numbers that appear on each throw. The random variables can be either \textbf{discrete} if it takes only takes finite or countably infinite values. They are \textbf{continuous} if they can take any value from some interval of numbers. \par\medskip\medskip
+For the sake of discussion, let $X$ be a continuous random variable. Then $f(x)$ is a \textbf{probability density function} (PDF) if 
+\begin{itemize}
+\item $f(x)\geq 0$ for all $x\in X$
+\item $\int_{-\infty}^\infty f(x)dx=1$, $\int_{a}^b f(x)dx=P(a\leq x \leq b)$
+\end{itemize}
+A \textbf{cumulative density fuction} (CDF) $F(x)$ is defined as $\Pr(X\leq x)$, or probability of any value less than or equal to $x$ occurring. \par\medskip\medskip
+There are cases where we are concerned with multiple random variables. Let $X,Y$ be discrete random variables. We call $f(x,y)$ a \textbf{discrete joint PDF} (or joint probability mass function) if
+\[
+f(x,y) = \Pr(X=x, Y=y)
+\]
+The \textbf{marginal probability density function} of $x$ is defined by
+\[
+f(x) = \sum_{y\in Y}f(x,y) \ \text{or if continuous,} \ \int_{y\in Y}f(x,y)dy 
+\]
+As we will see later on, problems like this is usually addressed by drawing a table of joint probability distribution. \par\medskip\medskip
+It is possible that our interest could be on a behavior of one variable while conditioning that the other variable takes certain value. For this, we use the concept of \textbf{conditional PDF}, denoted as $f(x|y)$. It calculates the probability that the random variable $X$ takes the value $x$ while the sample space is effectively reduced to $Y$ taking the value $y$. Mathematically, it is defined as
+\[
+\Pr(X=x|Y=y)=f(x|y)=\frac{f(x,y)}{f(y)}=\frac{\Pr(X=x, Y=y)}{\Pr(Y=y)}
+\] 
+The two random variables are said to be \textbf{statistically independent} if the following is satisfied
+\[
+\Pr(X=x|Y=y)=\Pr(X=x)\ (\text{or}\ f(x|y)=f(x))
+\]
+which implies that the joint PDF can be expressed as
+\[
+f(x,y)=f(x)f(y)
+\] \par\medskip
+In many cases, we are interested in some key properties of the distribution. Some of them are ($X,Y$ are discrete random variables) \\
+\begin{itemize}
+\item \textbf{Expected Value}: $E(X)=\sum_{x\in X} xf(x)$
+\item \textbf{Variance}: $var(X)=E[(X-E(X))^2]=E(X^2)-[E(X)]^2$
+\item \textbf{Covariance}: $cov(X,Y)=E[(X-E(X))(Y-E(Y))]=E(XY)-E(X)E(Y)$
+\item \textbf{Correlation Coefficient}: $corr(X,Y)=\frac{cov(X,Y)}{\sqrt{var(X)}\sqrt{var(Y)}}$
+\end{itemize}  \par\medskip\medskip
+Also, it is quite handy to be familiar with the following properties.\\
+\begin{mdframed}[backgroundcolor=blue!5] 
+\begin{property}
+Note: Small case letters denote a constant, capital case denote a random variable
+\begin{itemize}
+\item $E(aX+b) = aE(X)+b$
+\item $E(g(X))=\sum_{x\in X}g(X)f(x)dx$
+\item $var(aX+b)=a^2var(X)$
+\item $var(aX+bY)=a^2var(X)+b^2var(Y)+2ab\times cov(X,Y)$
+\item If $X,Y$ are independent, then $Cov(X,Y) =0$, this implies that \\$E(XY)=E(X)E(Y)$
+\item $cov(a+bX, c+dY)=bd\times cov(X,Y)$ 
+\end{itemize} \par\medskip
+\end{property}
+\end{mdframed}
+
+\section{Some useful distributions}
+Here, I will go over some distributions that will be repeatedly used throughout the course. You do not have to memorize the PDFs of all these distributions (but it always helps if you do, even if not for the exam). The goal here is to help you be familiar with these distributions whenever the use of these becomes necessary.
+\begin{itemize}
+\item \textbf{Normal distribution}: A distribution of random variable $X$ is said to be normal with mean $\mu$ and variance $\sigma^2$ if we write the PDF as
+\[
+f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2}}
+\]
+Even better, we can standardize this random variable to have mean 0 and variance 1 by defining a random variable $Z=\frac{X-\mu}{\sigma}$ (You can verify that $Z$ has mean 0 and variance 1 using the properties above).  The new PDF for the standard normal distribution can be written as 
+\[
+f(z) = \frac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}}
+\]
+They are used in cases where we are working with a large number of samples
+\item \textbf{Chi-squared($\chi^2$) distribution}: If $Z_1$,...,$Z_n$ are independent standard normal distribution, we can define a new random variable $Z=\sum_{i=1}^n Z_i^2$ as a chi-squared distribution with degrees of freedom $n$.  
+\item \textbf{$t$ distribution}: If $Z$ is a standard normal variable and $X$ is a chi-squared distribution with $k$ degrees of freedom, then $t$ distribution with $k$ degrees of freedom is defined by
+\[
+t_k=\frac{Z}{\sqrt{X/k}}
+\]
+We normally use them in small sample cases. Note that as the number of sample rises, this distribution approximates to normal distribution. 
+\item \textbf{$F$ distribution}: Let $X_1$ and $X_2$ be chi-squared distribution with degrees of freedom $k_1$ and $k_2$ respectively. Then $F$ distribution with ($k_1,k_2$) degrees of freedom is defined by
+\[
+F_{k_1,k_2}=\frac{X_1/k_1}{X_2/k_2}
+\]
+They are usually carried out to test multiple hypotheses at the same time or testing the whole model. 
+\end{itemize}

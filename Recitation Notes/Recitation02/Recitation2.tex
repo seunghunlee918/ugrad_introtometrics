@@ -1,0 +1,227 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{framed}
+\usepackage{tikz}
+%\usepackage{charter}
+\usepackage{mathpazo}
+%\usepackage{newcent}
+\usepackage{indentfirst}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usetikzlibrary{trees}
+\pagestyle{fancy}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{property}
+\newtheorem{property}{Property}[section]
+\theoremstyle{assumption}
+\newtheorem{assumption}{Assumption}[section]
+\theoremstyle{example}
+\newtheorem{example}{Example}[section]
+\theoremstyle{comment}
+\newtheorem{comment}{Comment}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\usepackage{lastpage}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{setspace}
+\hypersetup{
+colorlinks=true,
+linkcolor=black,
+filecolor=green, 
+urlcolor=blue,
+}
+\newcommand{\ROM}[1]
+    {\MakeUppercase{\romannumeral #1}}
+\fancyhead[L]{Econometrics \ROM{2}: Recitation 12 }%change each reci
+\fancyhead[R]{Spring 2020}
+\fancyfoot[C]{\thepage \hspace{1pt} / \pageref{LastPage}}
+
+\fancypagestyle{firstpage}{%
+\fancyhf{}%
+\renewcommand{\headrulewidth}{0mm}%
+  \fancyfoot[C]{\thepage \hspace{1pt} / \pageref{LastPage}}
+}
+
+\usepackage{wrapfig}
+
+\lhead{Introduction to Econometrics}
+
+\rhead{Recitation 2}
+
+
+\title{Introduction to Econometrics: Recitation 2}
+
+\begin{document}
+\linespread{1.25}
+\author{Seung-hun Lee}
+\date{}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%
+\section{Review of Key Concepts from Statistics} 
+\subsection{Statistical Inference}
+
+\textbf{Statistical Inference} refers to any process of using data analysis to make judgements on some parameters of a population using a randomly sampled observation from the larger population. To conduct a statistical inference, one must first identify a statistically \textbf{testable question (hypothesis)}, collect and organize the data, carry out an estimation, test the hypothesis, and come to a conclusion using confidence intervals or other methods. \par\medskip
+
+A typical type of question answered through statistical inference are as follows
+\begin{itemize}
+\item Do exposure to radiation during pregnancy affect long-run health and educational outcomes? (Almond et al. 2009, Black et al. 2019) 
+\item Do mask regulations reduce Coronavirus infections?
+\item Do migrants affect labor market wages in their new societies? Are they different depending on the occupational sector? (Peri et al. 2020)
+\end{itemize}
+In sum, you can see that the questions are typically composed of two parts - one where there is a preceding factor ($X$), whether accidental, policy-related, or individual's choice based on will and the other being the outcome of interest ($Y$). Once you know your $X$ and $Y$'s you need to collect data on these variables. (Not an easy task in reality)
+\par
+Once the question is identified and the data is obtained, \textbf{estimation} of the statistic of interest should follow. Usually, this means obtaining sample mean, sample variance, or an estimate of a coefficient of interest (you will see $\hat{\beta}$ throughout this course). The next step is \textbf{hypothesis testing}, where the null hypothesis ($H_0$) is tested against an alternative hypothesis ($H_1$). Typically, claims related to status quo is put as null hypothesis and the new discovery one is trying to sell is classified as alternative hypothesis. Lastly, one constructs a \textbf{confidence interval} either support the null hypothesis or reject it. Typically, researchers use 95\% or 99\% confidence interval. Confidence interval is used to gauge how accurately your test statistic is calculated. If the confidence interval includes the null hypothesis value (zero, in most cases), then your test statistic is calculated inaccurately and you fail to reject the null hypothesis. \par\medskip
+For instance, suppose that the question of interest is the effect of class sizes on test scores. Then, one needs to define what a small classroom is. Let's suppose that any class with fewer than 20 students is a small classroom. Then, calculate the sample mean and the sample variance of test scores of each type of classroom. Let $\bar{Y}_s,S^2_s$ denote sample mean and sample variance of test scores from the small classrooms. ($\bar{Y}_b, S^2_b$ are sample mean and sample variance from large classrooms). Once those are calculated, a test statistic is required to test the following null and alternative hypothesis:
+\begin{gather*}
+H_0: E(Y_b)-E(Y_s) = 0\ \text{vs.}\ H_1:E(Y_b)-E(Y_s) \neq 0\\
+\text{Test statistic:} \ \frac{\bar{Y}_b-\bar{Y}_s}{\sqrt{\frac{S_b^2}{n_b}+\frac{S_s^2}{n_s}}}
+\end{gather*}
+Once test statistic is obtained, it should be compared with a critical value, which differs depending on the significance level and the distribution of the null hypothesis. If the null hypothesis is standard normal and we are using a 5\% significance level, we would be using a critical value 1.96. If the test statistics is larger than 1.96, we reject the null. Otherwise, we accept the null.
+\par
+ Another way to conduct this test is to construct a confidence interval of 95\% to see if this interval includes the value of 
+$\bar{Y}_b-\bar{Y}_s$ claimed by the null hypothesis, 0. If the confidence interval includes 0, then null hypothesis cannot be rejected. Otherwise, null hypothesis is rejected.
+\par\medskip
+
+Yet another way to conclude whether null hypothesis should be rejected or not is to see the \textbf{p-value}, which is roughly defined as the probability of finding a more extreme result than the observed data, assuming that $H_0$ is true. The calculation of the p-value depends on how $H_1$ is defined. For instance, a p-value of 0.061 would imply that there is a 0.061 probability that the next draw would become more extreme than the current draw. If the significance level is chosen to be 5\%, the null hypothesis would not be rejected. If it is selected to be 10\%, the null hypothesis would be rejected. \par\medskip
+Note that the above is a \textbf{two-sided test}. One can always have a \textbf{one-sided test} by setting the alternative hypothesis as 
+\[
+H_1 : E(Y_b)-E(Y_s )> 0 \ \text{or}\ E(Y_b)-E(Y_s) < 0
+\] \par\medskip
+Before discussing the desirable properties of the estimators, some concepts need to be clarified
+\begin{itemize}
+\item \textbf{i.i.d.}: Independent and Identical Distribution. In a random sampling, If $Y_1, .. , Y_n$ are from the same population and are selected at random, they are identically distributed. Moreover, if a selection of $Y_1$ has no impact on the selection of $Y_2$ and so on, they are independently distributed.
+\item \textbf{Sampling Distribution}: It is a probability distribution of a test statistic derived from the random sample you are working on
+\end{itemize} \medskip
+
+%% Sample question
+
+To ensure that the estimators obtained from sampling has good qualities, the following standards can be used:
+\begin{itemize}
+\item \textbf{Unbiasedness:} $E(\bar{Y})=\mu_y$, where $\mu_y$ is the true parameter value.
+\item \textbf{Efficiency:} $\bar{Y}$ is the efficient estimator if compared against any other estimator $\hat{Y}$, it is the case that $var(\bar{Y})\leq var(\hat{Y})$
+\item \textbf{Consistency:} $\bar{Y}$ is consistent if $\bar{Y}$ converges to $\mu_y$ in probability.
+\item \textbf{Asymptotic Normality:} The estimator is asymptotically normal if it becomes normally distributed as $n$ increases (central limit theorem) 
+\end{itemize}
+
+
+
+\section{Least Squares Estimation}
+\subsection{Derivation of Least Squares Estimator}
+Suppose that the \textbf{population linear regression model} (also known as data generating process in some books) is
+\[
+Y_i = \beta_0 + \beta_1X_i + \epsilon_i
+\]
+However, we do not know what the true values of the population parameters - $\beta_0$ and $\beta_1$ in this case- are, an alternative way to approach the problem is to use the \textbf{sample linear regression model} (or just model)
+\[
+Y_i = \hat{\beta}_0 +\hat{\beta}_1X_i +u_i
+\]
+The ideal estimator minimizes the squared sum of residuals. Mathematically, this can be obtained by solving the following minimization problem and the first order conditions
+\footnotesize{\begin{gather*}
+\min_{\hat{\beta}_0, \hat{\beta}_1} \sum_{i=1}^n (Y_i-\hat{\beta}_0 - \hat{\beta}_1X_i)^2\\
+[\hat{\beta}_0]: -2\sum_{i=1}^n(Y_i-\hat{\beta}_0-\hat{\beta}_1X_i)=0\\
+[\hat{\beta}_1]: -2\sum_{i=1}^nX_i(Y_i-\hat{\beta}_0-\hat{\beta}_1X_i)=0 
+\end{gather*}}\normalsize
+The resulting \textbf{least squares estimators} are
+\[
+\hat{\beta}_0 = \bar{Y}-\hat{\beta}_1\bar{X}, \ \ \hat{\beta}_1=\frac{\sum_{i=1}^n(Y_i-\bar{Y})(X_i-\bar{X})}{\sum_{i=1}^n(X_i-\bar{X})^2}
+\]
+\begin{mdframed}[backgroundcolor=blue!5] 
+\textbf{Proof for deriving $\hat{\beta}_0,\hat{\beta}_1$}
+\\ \\
+\footnotesize{From $[\hat{\beta}_0]: -2\sum_{i=1}^n(Y_i-\hat{\beta}_0-\hat{\beta}_1X_i)=0$ Note that 
+\begin{gather*}
+-2\sum_{i=1}^n(Y_i-\hat{\beta}_0-\hat{\beta}_1X_i)=0 \implies \sum_{i=1}^n(Y_i-\hat{\beta}_0-\hat{\beta}_1X_i)=0 \\
+\implies  \sum_{i=1}^n Y_i -\sum_{i=1}^n\hat{\beta}_0 -\hat{\beta}_1\sum_{i=1}^nX_i =0 \implies  \sum_{i=1}^n Y_i =\sum_{i=1}^n\hat{\beta}_0 +\hat{\beta}_1\sum_{i=1}^nX_i \\
+\implies  \sum_{i=1}^n Y_i =n\hat{\beta}_0 +\hat{\beta}_1\sum_{i=1}^nX_i
+\end{gather*}
+Using the fact that $\sum_{i=1}^n Y_i = n\bar{Y} \iff \frac{1}{n}\sum_{i=1}^n Y_i = \bar{Y}$, I get
+\[
+\hat{\beta}_0=\bar{Y}-\hat{\beta}_1\bar{X}
+\]\
+As for $[\hat{\beta}_1]: -2\sum_{i=1}^nX_i(Y_i-\hat{\beta}_0-\hat{\beta}_1X_i)=0$ divide both sides by $-2$ and rearrange
+\begin{gather*}
+\sum_{i=1}^nX_iY_i=\hat{\beta}_0\sum_{i=1}^nX_i +\hat{\beta}_1\sum_{i=1}^nX_i^2\implies \sum_{i=1}^nX_iY_i=(\bar{Y}-\hat{\beta}_1\bar{X})\sum_{i=1}^nX_i +\hat{\beta}_1\sum_{i=1}^nX_i^2\\
+\implies\hat{\beta}_1\left(\sum_{i=1}^nX_i^2-\bar{X}\sum_{i=1}^nX_i\right)=\sum_{i=1}^nX_iY_i-\bar{Y}\sum_{i=1}^nX_i
+\implies \hat{\beta}_1 = \frac{\sum_{i=1}^nX_iY_i - n\bar{X}\bar{Y}}{\sum_{i=1}^nX_i^2-n{\bar{X}}^2}
+\end{gather*}
+Note that 
+\[
+\begin{aligned}
+\sum_{i=1}^n(X_i-\bar{X})(Y_i-\bar{Y}_i) &= \sum_{i=1}^nX_iY_i - \bar{X}\sum_{i=1}^nY_i -\bar{Y}\sum_{i=1}^nX_i +\sum_{i=1}^n\bar{X}\bar{Y} \\
+=\sum_{i=1}^nX_iY_i - n\bar{X}\bar{Y} -n\bar{X}\bar{Y} +n\bar{X}\bar{Y} &= \sum_{i=1}^nX_iY_i - n\bar{X}\bar{Y} \\
+ \end{aligned}
+\]}\normalsize
+and similarly, $\footnotesize{\sum_{i=1}^n(X_i-\bar{X})^2 = \sum_{i=1}^nX_i^2-n{\bar{X}}^2}\normalsize$. So $\footnotesize{
+\hat{\beta}_1=\frac{\sum_{i=1}^n(Y_i-\bar{Y})(X_i-\bar{X})}{\sum_{i=1}^n(X_i-\bar{X})^2}
+}$\normalsize
+\end{mdframed}
+\par
+\subsection{Main Assumptions of the OLS Estimators}
+For the ordinary least squares to have desired properties of unbiasednesss, consistency, efficiency, and asymptotic normality, the following assumptions must be made
+\begin{mdframed}[backgroundcolor=blue!5] 
+\begin{assumption} Here are the assumptions for the classical linear regression model
+\begin{itemize}
+\item[\textbf{A1}] Linearity: The regression is assumed to be linear in parameters.
+\[
+\text{Okay: } Y_i = \beta_0 + \beta_1X_i + \beta_2X_i^2+u_i 
+\]
+\[
+\text{Not: } Y_i = \beta_0 + \beta_1X_i + \beta_2^2X_i+u_i,
+\]
+\item[\textbf{A2}] i.i.d.: $(X_i,Y_i)$ is assumed to be from independent, identical distribution
+\item[\textbf{A3}] $E(u_i|X_i)=0$: This means that conditional on letting $X_i$ take a certain value, we are not making any systematical error in the linear regression. This is required for the OLS to be unbiased. 
+\item[\textbf{A4}] Homoskedasticity: $var(u_i)=\sigma_2$, or variance of $u_i$ does not depend on $X_i$. If this condition is broken, there exists a \textit{heteroskedasticity}
+\item[\textbf{A5}] No Autocorrelation (Serial Correlation): For $i\neq j$, $cov(u_i,u_j)=0$. In other words, error at the previous period does not have any impact on the current period. This is usually broken in time series settings, where the error in the previous period carries over to the next period.
+\item[\textbf{A6}] Orthogonality: $cov(X_i,u_i)=0$. Or, the error term and the independent variable is uncorrelated. If otherwise, there exists an \textit{endogeneity}.
+\item[\textbf{A7}] No Outliers: Outlier has no impact on the regression results.
+\item[\textbf{A8}] $n>K$: There should be more observations than independent variables.
+\item[\textbf{A9}] Variability in $X$: Independent variables should take somewhat different values for each observation. Otherwise, multicollinearity problem exists.
+\item[\textbf{A10}] Correct Specification: The model has all the necessary independent variables. Otherwise, there might be an omitted variable or too much variable problem.
+\end{itemize}
+\end{assumption}
+\end{mdframed}
+
+\subsection{Measure of Fitness}
+These numbers tell us how informative the sample linear regression we used is in telling us about the population data. We discussed two types of measure
+\begin{itemize}
+\item $\mathbf{R^2}$: It is defined as a fraction of total variation which is explained by the model. Mathematically, this is
+\begin{gather*}
+Y_i = \underbrace{\hat{\beta}_0 + \hat{\beta}_1X_i}_{\hat{Y}_i} + u_i, \ \bar{Y} = \underbrace{\hat{\beta}_0 + \hat{\beta}_1\bar{X}}_{\bar{\hat{Y}}} + \bar{u}, \\
+\implies Y_i-\bar{Y} = (\hat{Y}_i - \bar{\hat{Y}}) - (u_i - \bar{u}) \\
+\implies \sum_{i=1}^n (Y_i-\bar{Y})^2= \sum_{i=1}^n (\hat{Y}_i - \bar{\hat{Y}})^2+\sum_{i=1}^n(u_i - \bar{u})^2 - 2\sum_{i=1}^n(\hat{Y}_i - \bar{\hat{Y}}) (u_i - \bar{u})
+\end{gather*}
+Note that $\sum_{i=1}^n(\hat{Y}_i - \bar{\hat{Y}}) (u_i - \bar{u})=\sum_{i=1}^n\hat{Y}_i{u}_i-\bar{\hat{Y}}\sum_{i=1}^nu_i -\bar{u}\sum_{i=1}^n\hat{Y}_i +n\bar{u}\bar{\hat{Y}}$. Since the mean of error $u_i$ is assumed to be 0, $\bar{u}=0$ and $\sum_{i=1}^nu_i = n\bar{u}$, we only need to take care of $\sum_{i=1}^n\hat{Y}_i{u}_i$. Note that it is equal to $\hat{\beta}_0\sum_{i=1}^nu_i + \hat{\beta}_1\sum_{i=1}^nu_iX_i$, The fact that mean of $u_i$ is 0, and $(X_i, u_i)$ are uncorrelated from A6 makes both term 0. So we are left with
+\[
+\underbrace{\sum_{i=1}^n (Y_i-\bar{Y})^2}_{TSS}= \underbrace{\sum_{i=1}^n (\hat{Y}_i - \bar{\hat{Y}})^2}_{ESS}+\underbrace{\sum_{i=1}^n(u_i - \bar{u})^2}_{RSS} \implies 1=\frac{\sum_{i=1}^n (\hat{Y}_i - \bar{\hat{Y}})^2}{\sum_{i=1}^n (Y_i-\bar{Y})^2} + \frac{\sum_{i=1}^n(u_i - \bar{u})^2 }{\sum_{i=1}^n (Y_i-\bar{Y})^2}
+\]
+Thus, the $R^2$ can be found as
+\[
+R^2 = \frac{\sum_{i=1}^n (\hat{Y}_i - \bar{\hat{Y}})^2}{\sum_{i=1}^n (Y_i-\bar{Y})^2} = \frac{ESS}{TSS} = 1-\frac{RSS}{TSS}
+\]
+Intuitively, higher $R^2$ implies that the model explains more of the total variance, which implies that the regression fits the data well. 
+\item $\mathbf{SER}$: Standard Error of Regression. It estimate the standard deviation of the error term in $Y_i$, or mathematically
+\[
+SER = \sqrt{\frac{1}{n-2}\sum_{i=1}^n u_i^2}
+\]
+where $u_i = y_i-\hat{y}_i$ and we use $n-2$ since there is loss of d.f. by two due to $\hat{\beta}_0, \hat{\beta}_1$. If SER turns out to be large, this implies that our model might be missing a key variable.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%
+
+\end{document}
+

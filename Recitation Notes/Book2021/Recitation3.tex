@@ -1,0 +1,71 @@
+
+
+\section{Main Assumptions of the OLS Estimators}
+For the ordinary least squares to have desired properties of unbiasednesss, consistency, efficiency, and asymptotic normality, the following assumptions must be made
+\begin{mdframed}[backgroundcolor=blue!5] 
+\begin{assumption} Here are the assumptions for the classical linear regression model
+\begin{itemize}
+\item[\textbf{A1}] Linearity: The regression is assumed to be linear in parameters.
+\[
+\text{Okay: } Y_i = \beta_0 + \beta_1X_i + \beta_2X_i^2+u_i 
+\]
+\[
+\text{Not: } Y_i = \beta_0 + \beta_1X_i + \beta_2^2X_i+u_i,
+\]
+
+\item[\textbf{A2}] $E(u_i|X_i)=0$: This means that conditional on letting $X_i$ take a certain value, we are not making any systematical error in the linear regression. This is required for the OLS to be unbiased. 
+\item[\textbf{A3}] Homoskedasticity: $var(u_i)=\sigma_2$, or variance of $u_i$ does not depend on $X_i$. If this condition is broken, there exists a \textit{heteroskedasticity}
+\item[\textbf{A4}] No Autocorrelation (Serial Correlation): For $i\neq j$, $cov(u_i,u_j)=0$. In other words, error at the previous period does not have any impact on the current period. This is usually broken in time series settings, where the error in the previous period carries over to the next period.
+\item[\textbf{A5}] Orthogonality: $cov(X_i,u_i)=0$. Or, the error term and the independent variable is uncorrelated. If otherwise, there exists an \textit{endogeneity}.
+
+\item[\textbf{A6}] $n>K$: There should be more observations than independent variables.
+\item[\textbf{A7}] Variability in $X$: Independent variables should take somewhat different values for each observation. 
+\item[\textbf{A8}] Correct Specification: The model has all the necessary independent variables in a correct functional form.
+\item[\textbf{A9}] No perfect multicollinearity: If one of the $X_i$ variable is a linear combination of other variables, some of these variables are not estimated.
+\item[\textbf{A10}] i.i.d.: $(X_i,Y_i)$ is assumed to be from independent, identical distribution
+
+\item[\textbf{A11}] No Outliers: Outlier has no impact on the regression results.
+
+
+
+\end{itemize}
+\end{assumption}
+\end{mdframed}
+
+\section{Measure of Fitness}
+These numbers tell us how informative the sample linear regression we used is in telling us about the population data. We discussed two types of measure
+\begin{itemize}
+\item $\mathbf{R^2}$: It is defined as a fraction of total variation which is explained by the model. Mathematically, this is
+\begin{gather*}
+Y_i = \underbrace{\hat{\beta}_0 + \hat{\beta}_1X_i}_{\hat{Y}_i} + \hat{u}_i, \ \bar{Y} = \hat{\beta}_0 + \hat{\beta}_1\bar{X} + \bar{\hat{u}}, \\
+\implies Y_i-\bar{Y} = (\hat{Y}_i - \bar{Y}) + \hat{u}_i \\
+\implies \sum_{i=1}^n (Y_i-\bar{Y})^2= \sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2+\sum_{i=1}^n\hat{u}_i^2 + 2\sum_{i=1}^n(\hat{Y}_i - \bar{Y}) \hat{u}_i
+\end{gather*}
+Note that 
+\[
+\sum_{i=1}^n(\hat{Y}_i - \bar{Y}) \hat{u}_i=\sum_{i=1}^n\hat{Y}_i{\hat{u}}_i-\bar{Y}\sum_{i=1}^n\hat{u}_i 
+\]
+Since the conditional mean of error $u_i$ is assumed to be 0 (A2), and the covariance between $X_i$ and $u_i$ is 0 (A5), the above equation becomes zero. So we are left with
+\[
+\underbrace{\sum_{i=1}^n (Y_i-\bar{Y})^2}_{TSS}= \underbrace{\sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2}_{ESS}+\underbrace{\sum_{i=1}^n\hat{u}_i}_{RSS} \implies 1=\frac{\sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2}{\sum_{i=1}^n (Y_i-\bar{Y})^2} + \frac{\sum_{i=1}^n\hat{u}_i ^2 }{\sum_{i=1}^n (Y_i-\bar{Y})^2}
+\]
+Thus, the $R^2$ can be found as
+\[
+R^2 = \frac{\sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2}{\sum_{i=1}^n (Y_i-\bar{Y})^2} = \frac{ESS}{TSS} = 1-\frac{RSS}{TSS}
+\]
+Intuitively, higher $R^2$ implies that the model explains more of the total variance, which implies that the regression fits the data well. 
+\item $\mathbf{SER}$: Standard Error of Regression. It estimate the standard deviation of the error term in $Y_i$, or mathematically
+\[
+SER = \sqrt{\frac{1}{n-2}\sum_{i=1}^n \hat{u}_i^2}
+\]
+where $u_i = y_i-\hat{y}_i$ and we use $n-2$ since there is loss of d.f. by two due to $\hat{\beta}_0, \hat{\beta}_1$. If SER turns out to be large, this implies that our model might be missing a key variable.
+ \item \textbf{RMSE}: Root mean squared error. It is similar to SER in terms of how it looks, 
+\[
+RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^n \hat{u}_i^2}
+\]
+this is used to assess the accuracy of the predictions.
+\end{itemize}
+%%%%%%%%%%%%%%%%%%
+
+
+

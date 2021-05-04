@@ -1,0 +1,94 @@
+\documentclass[12pt]{book}
+\usepackage{geometry}
+\geometry{letterpaper, left=22.5mm, right=22.5mm, top=30mm, bottom=30mm}
+\geometry{letterpaper}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{framed}
+\usepackage{tikz}
+\usepackage{mathpazo}
+%\usepackage{charter}
+%\usepackage{newcent}
+\usepackage{indentfirst}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usetikzlibrary{trees}
+\pagestyle{fancy}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{property}
+\newtheorem{property}{Property}[section]
+\theoremstyle{assumption}
+\newtheorem{assumption}{Assumption}[section]
+\theoremstyle{example}
+\newtheorem{example}{Example}[section]
+\theoremstyle{comment}
+\newtheorem{comment}{Comment}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\usepackage{lastpage}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{setspace}
+\hypersetup{
+colorlinks=true,
+linkcolor=black,
+filecolor=green, 
+urlcolor=blue,
+}
+\newcommand{\ROM}[1]
+    {\MakeUppercase{\romannumeral #1}}
+\fancyhead[L]{Econometrics \ROM{2}: Recitation 12 }%change each reci
+\fancyhead[R]{Spring 2020}
+\fancyfoot[C]{\thepage}
+
+\fancypagestyle{firstpage}{%
+\fancyhf{}%
+\renewcommand{\headrulewidth}{0mm}%
+  \fancyfoot[C]{\thepage}
+}
+
+\lhead{Introduction to Econometrics}
+
+\rhead{Spring 2021}
+
+
+\title{Introduction to Econometrics: Spring 2021\footnote{These are the collection of each recitation notes from Spring 2021 semester at Columbia University. The materials are based on Stock and Watson's Introduction to Econometrics textbook (4th edition). In making this note, I am indebted to Professor Gashaw for providing a detailed lecture note I could work on. Any remaining errors are mine.}}
+\date{May 5th, 2021}
+\author{Seung-hun Lee\footnote{sl4436@columbia.edu. Please contact me if you find any errors.}}
+
+\begin{document}
+\pagestyle{empty}
+\frontmatter
+\maketitle
+
+\tableofcontents
+
+
+\pagestyle{fancy}
+\mainmatter
+\input{Recitation1.tex}
+
+\input{Recitation2.tex}
+
+\input{Recitation3.tex}
+\input{Recitation4.tex}
+
+\input{Recitation5.tex}
+
+\input{Recitation7.tex}
+
+\input{Recitation8.tex}
+\input{Recitation9.tex}
+\input{Recitation10.tex}
+\input{Recitation11.tex}
+\end{document}
