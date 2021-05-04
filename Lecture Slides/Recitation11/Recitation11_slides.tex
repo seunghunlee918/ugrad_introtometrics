@@ -1,0 +1,364 @@
+\documentclass[compress]{beamer}
+
+\mode<presentation>
+\usetheme{Madrid}
+\definecolor{Columbia}{RGB}{185,217,235}
+\definecolor{Columbia2}{RGB}{0,51,160}
+\definecolor{Columbia3}{RGB}{0,114,206}
+\setbeamercolor{title}{fg=Columbia2}
+\setbeamercolor{frametitle}{fg=Columbia2}
+\setbeamercolor{block title}{bg=Columbia, fg=Columbia2}
+%\setbeamercolor{block body}{fg=Columbia2}
+\setbeamercolor{structure}{fg=Columbia}
+\setbeamercolor{item projected}{fg=white}
+\setbeamercolor{item}{fg=Columbia2}
+\setbeamercolor{subitem}{fg=Columbia2}
+\setbeamercolor{section in toc}{fg=Columbia2}
+\setbeamercolor{description item}{fg=Columbia}
+\setbeamercolor{caption name}{fg=Columbia2}
+\setbeamercolor{button}{fg=Columbia2}
+\usepackage{graphics}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage{multirow, makecell}
+\usepackage{float}
+\usepackage{fancyvrb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{adjustbox}
+\usepackage{threeparttable}
+\usepackage{hyperref}
+\usepackage[scaled=0.92]{helvet}
+\newenvironment{wideitemize}{\itemize\addtolength{\itemsep}{10pt}}{\enditemize}
+\newenvironment{wideenumerate}{\enumerate\addtolength{\itemsep}{10pt}}{\endenumerate}
+%\hypersetup{
+%colorlinks=true,
+%linkcolor=black,
+%filecolor=green, 
+%urlcolor=blue,
+%}
+\beamertemplatenavigationsymbolsempty
+\setbeamercolor{author in head/foot}{bg=Columbia2, fg=white}
+\setbeamercolor{title in head/foot}{bg=Columbia3, fg=white}
+\setbeamercolor{date in head/foot}{bg=Columbia, fg=Columbia2}
+\setbeamercolor{section in head/foot}{bg=Columbia, fg=Columbia2}
+\setbeamercolor{headline}{bg=Columbia}
+\setbeamertemplate{footline}{
+    \leavevmode%
+    \hbox{%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+            \usebeamerfont{author in head/foot}\insertshortauthor
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+            \usebeamerfont{title in head/foot}\insertshorttitle
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+            \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+            \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+        \end{beamercolorbox}}%
+        \vskip0pt%
+    }
+\setbeamercolor{page number in head/foot}{fg=black}
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{subsection in toc}{\leavevmode\leftskip=3em\rlap{\hskip-1.75em\inserttocsectionnumber.\inserttocsubsectionnumber}\inserttocsubsection\par}
+\setbeamerfont{subsection in toc}{size=\footnotesize}
+%\setbeamertemplate{headline}{%
+  %\begin{beamercolorbox}[ht=5.5ex]{section in head/foot}
+    %\vskip2pt\insertnavigation{0.33\paperwidth}\vskip2pt
+  %\end{beamercolorbox}%
+%}
+
+
+\makeatletter
+\let\@@magyar@captionfix\relax
+\makeatother
+
+
+\title[Recitation 11]{Recitation 11} % Change this regularly
+\author[Seung-hun Lee]{Seung-hun Lee}
+\institute[Columbia University]{Columbia University}
+
+\date[]{}
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+%%%%%%%%%%%%% Section 1. 
+\begin{frame}
+\frametitle{Big data}
+What is Big data?
+\begin{itemize}
+\item It can simply mean data with large observations or large number of control variables. 
+\item In general instances, atypical data such as text data, and satellite imagery are referred to as big data. 
+\item In this class, we focus on the instance where there are many control variables, specifically on what to do if there are many control variables relative to the number of observations. 
+\item Additionally, we focus on trying to get the best way to predict a result that is currently not in the dataset.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Characterizing MSPE}
+Mean squared prediction error
+\begin{itemize}
+\item Regression format is 
+\[
+Y_{i}^*=\beta_1X_{1i}^*+....+\beta_kX_{ki}^*+u_i^*
+\]
+\item  $X_{1i}^*$ is the ``standardized" version of $X_{1i}$'s, $Y^*_i$ the ``demeaned" version.
+\item  Note that we CANNOT have a constant term $\beta_0$ here because if we demean $\beta_0$, which is the same for all $i$'s, they vanish. 
+\item MSPE:  the expected value of the squared error made by predicting $Y$ for an observation not in the dataset.
+\[
+MSPE= E[Y^{OS}-\hat{Y}^{OS}]^2
+\]
+\begin{itemize}
+\item $\hat{Y}^{OS}$: obtained from the coefficients of $\beta$'s made from the in-sample
+\item $Y^{OS}$ : realized value of $Y$ outside of the sample
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Characterizing MSPE}
+Mean squared prediction error
+\begin{itemize}
+\item With these notations, we can define the prediction error as
+\[
+Y_i^{OS}-\hat{Y}_i^{OS}=(\beta_1-\hat{\beta}_1)X^{OS}_{1i}+...+(\beta_k-\hat{\beta}_k)X^{OS}_{ki}+u_i^{OS}
+\]
+\item Define $\sigma_u^2=E[u_i^{OS}]^2$, then we can write MSPE as
+\[
+MSPE=\sigma_u^2+ E[(\beta_1-\hat{\beta}_1)X^{OS}_{1i}+...+(\beta_k-\hat{\beta}_k)X^{OS}_{ki}]
+\]
+\item Oracle prediction: the smallest possible MSPE, $\sigma_u^2$
+\item However,  we cannot predict $\beta$'s perfectly.
+\item The more predictors we have, we generally end up having larger MSPE $\to$ need to reduce $X$'s. 
+\item Need Ridge, LASSO, and Principal Component method comes in
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Methods}
+In principle
+\begin{itemize}
+\item Goal: Find other estimators that does not increase the MSPE compared to the rate in which the same rises in OLS estimators. 
+\item Idea: Reduce the $\sigma_u^2$, the variance from the residual sums of squares, at the expense of introducing a small bit of bias. 
+\item How: Providing a penalty for having a model with large number of regressors (what we formally call `shrinkage'). 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ridge}
+Estimation
+\begin{itemize}
+\item Minimize a `penalized' sum squared of residuals
+\[
+\hat{\beta}_{Ridge}=\arg\min_{\beta_1,..,\beta_k}\left[ \sum_{i=1}^n(Y_i - \beta_1X_{1i}-....-\beta_kX_{ki})^2 + \lambda_{Ridge}\sum_{j=1}^k\beta_j^2\right]
+\]
+\item $\lambda_{Ridge}\sum_{j=1}^k\beta_j^2$: penalty for complexity. 
+\item Introduce bias so that the variance term $\sigma_u^2$ will be reduced.
+\item Variance and the bias in MSPE moves in a trade-off relation 
+\item Ridge estimator minimizes MSPE by reducing the variance term to the extent that the bias term does not rise too drastically. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{LASSO}
+Estimation
+\begin{itemize}
+\item Penalty term takes a different form: 
+\[
+\hat{\beta}_{LASSO}=\arg\min_{\beta_1,...,\beta_k}\left[ \sum_{i=1}^n(Y_i - \beta_1X_{1i}-....-\beta_kX_{ki})^2 + \lambda_{LASSO}\sum_{j=1}^k |\beta_j|\right]
+\]
+\item The difference between the two lies in the degree of shrinkage. 
+\begin{itemize}
+\item When the OLS estimates are small, the LASSO shrinks those estimates all the way to 0. 
+\item Ridge also shrinks those coefficients close to 0, they do not exactly set them to 0. 
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Principal component}
+Estimation
+\begin{itemize}
+\item You are using a linear combination of some subset of $k$ variables so that you end up with $p<k$ number of regressors (`collapsing' the model)
+\item Solve the following problem to get the $j$'th principal component $PC_j$
+\[
+\max var\left(\sum_{i=1}^Ka_{ji}X_i\right)\  \text{s.t.}\ \sum_{i=1}^ka_{ji}^2=1
+\]
+with another condition being that $corr(PC_j,PC_{j-1})=0$
+\item Solve the \textit{maximization}: We want the $X$'s to explain more of the variation
+\item $\sum_{i=1}^ka_{ji}^2=1$: Regularization method
+\item $corr(PC_j,PC_{j-1})=0$: We want to minimize the overlapping amount of information across different principal components.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{$m$-fold cross validation}
+Idea
+\begin{itemize}
+\item Goal: Select the optimal $\lambda$ penalty parameters for Ridge/LASSO and find right amount of principal components
+\item Split the sample into $m$ subsets of equal size. 
+\item Then, one of them becomes your `test' sample and the rest becomes an out-sample. 
+\item You will derive a first estimate of MSPE. 
+\item Repeat this until you get $m$ estimates of MSPE. 
+\item The right parameter values minimizes the averages of these MSPEs. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Time series}
+Setup
+\begin{itemize}
+\item Collect data on same observational unit $i$ for multiple time periods. 
+\item Primary uses: Forecasting, modeling risks, and analyzing dynamic causal effects
+\item Time series differs in that errors are likely to be autocorrelated and thus require different ways to calculate the standard error. 
+\item Let $Y_t$ be the time series data captured at certain period $t$ - GDP
+\item \textbf{Lags} are characterized as $Y_{t-1}$ and \textbf{leads} are defined as $Y_{t+1}$. 
+\item $\Delta Y_{t}\equiv Y_t-Y_{t-1}$: The \textbf{first difference} at time $t$. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{AR and ADL}
+Model
+\begin{itemize}
+\item $AR(p)$: $Y_t$ is regressed against its own lagged values by $p$ times: 
+\[
+Y_t = \beta_0+\beta_1Y_{t-1}+...+\beta_pY_{t-p}+u_t 
+\]
+\begin{itemize}
+\item Each coefficient $\beta_k$ indicates how past values are useful in forecasting
+\end{itemize}
+\item $ADL(p,q)$: $p$ lags of dependent variable and $q$ lags for $X$ variable
+\[
+Y_t = \beta_0+\beta_1Y_{t-1}+...+\beta_p Y_{t-p} + \delta_1 X_{t-1}+...+\delta_qX_{t-q}+u_t 
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{AR and ADL}
+Model
+\begin{itemize}
+\item Right amount of $p$ and $q$ minimizes the following \textbf{information criteria}
+\[
+\begin{aligned}
+AIC:& \ln\left(\frac{SSR(p,q)}{T}\right)+(K)\frac{2}{T}&
+BIC:& \ln\left(\frac{SSR(p,q)}{T}\right)+(K)\frac{\ln{T}}{T}\\
+\end{aligned}
+\]
+where $K=1+p+q$
+\item \textbf{Granger causality}: Test that helps us see whether $X$ is useful in predicting $Y$
+\[
+H_0: \delta_1 = ... = \delta_q=0, \ \ H_1: \lnot H_0
+\]
+If the null hypothesis is rejected, we say that $X$ \textit{Granger-causes} $Y$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Stationarity}
+Idea
+\begin{itemize}
+\item Stationary: Distribution of $(Y_{t+1},..,Y_{t+s})$ does not depend on $t$. 
+\item In other words, the distribution of $Y$ does not change over time
+\item Nonstationary:  When there is a trend or a break in the movement of the data (or any change in underlying parameters), 
+\item Trends
+\begin{itemize}
+\item \textbf{Deterministic trend} is a nonrandom  function of time, ($Y_t = \alpha t^2$)
+\item \textbf{Stochastic trend} is random, and time-variant distribution, such as the random walk $Y_t = Y_{t-1}+u_t$  (You can check that $var(Y_t)=t\sigma_u^2$)
+\item Any other case where $\beta_1>1$ is also nonstationary
+\end{itemize} 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Stationarity}
+Testing for this in AR(1)
+\begin{itemize}
+\item Eyeball test: Check graphically
+\item Dickey-Fuller test: Check for the existence of a `unit root' by testing
+\[
+H_0: \beta_1\geq 1,\ H_1 : \beta_1<1 
+\]
+\item See notes to have an idea of what to do in an $AR(p)$ case
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Stationarity}
+Testing structural breaks
+\begin{itemize}
+\item Assume a ADL(1,1) structure, but that we know when the structural break occurs at year $\tau$ 
+\item Let $D_t(\tau)=1$ if year $t\geq\tau$ and 0 otherwise. 
+\item Then we write the equation as
+\[
+Y_t = \beta_0 +\beta_1Y_{t-1}+\delta_1 X_{t-1} + \gamma_1 D_t(\tau)+\gamma_2 D_t(\tau)Y_{t-1}+\gamma_3 D_t(\tau)X_{t-1}+u_t
+\]
+\item To check for structural break, test joint hypothesis of the following form:
+\[
+H_0: \gamma_1 = \gamma_2 = \gamma_3 =0, \ H_1: \lnot H_0
+\]
+This is the idea behind the \textbf{Chow test}. 
+\item If structural break is unknown, we can do a \textbf{Quandt Likelihood Ratio test} that implements multiple Chow tests and finds the point where structural break most likely happened, if it occurred.  
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dynamic Causal analysis}
+Causal analysis
+\begin{itemize}
+\item \textbf{Dynamic causal effect} captures the effect of $X$ on $Y$ over time.
+\item Write the distributed lag model as 
+\[
+Y_t = \alpha+\beta_0X_t + \beta_1X_{t-1}+...+\beta_pX_{t-p}+u_t
+\]
+\item $\beta_0$ captures the contemporaneous impact of $X$ on $Y$, holding past values of $X$ constant. 
+\item $\beta_j , j\in[1,p]$ captures the impact of $X$ from $j$ period(s) ago on $Y$, holding $X$ from other periods constant
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dynamic Causal analysis}
+Causal analysis
+\begin{itemize}
+\item Cumulative effect: Cumulative effect can be captured by summing over multiple $\beta$'s
+\item Specifically, we can write
+\[
+\begin{aligned}
+Y_t& = \alpha+\beta_0X_t + \beta_1X_{t-1}+u_t\\
+&=\alpha +\beta_0 X_t - \beta_0X_{t-1} + \beta_0 X_{t-1} + \beta_1 X_{t-1}+u_t \\
+&=\alpha + \beta_0\Delta X_t + (\beta_0 + \beta_1)X_{t-1}+u_t\\
+\end{aligned}
+\]
+\item Assumptions
+\begin{itemize}
+\item (Sequential) Exogeneity: $E[u_t|X_t, X_{t-1},...,X_1]=0$. Or that error terms should not be correlated with current and past values of $X$
+\item Stationarity: $Y$ and $X$ should have stationary distributions and ($Y_t, X_t$) and ($Y_{t-j}, X_{t-j}$) becomes independent as $j$ gets large. 
+\item $Y$ and $X$ has nonzero finite moments
+\item There is no perfect multicollinearity
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dynamic Causal analysis}
+Standard errors
+\begin{itemize}
+\item Given that there is a possibility that autocorrelation can exist, we need a standard error that takes into account autocorrelation and heteroskedasticity. 
+\item This is known as \textbf{heteroskedasticity and autocorrelation consistent} errors (HAC errors). 
+\item The takeaway is that standard errors in the typical STATA output can be wrong and we need to take a slightly different approach.
+\item Use \texttt{newey} in STATA 
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%
+\end{document}

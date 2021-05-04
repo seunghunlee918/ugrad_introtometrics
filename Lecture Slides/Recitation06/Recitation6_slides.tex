@@ -1,0 +1,279 @@
+\documentclass[compress]{beamer}
+
+\mode<presentation>
+\usetheme{Madrid}
+\definecolor{Columbia}{RGB}{185,217,235}
+\definecolor{Columbia2}{RGB}{0,51,160}
+\definecolor{Columbia3}{RGB}{0,114,206}
+\setbeamercolor{title}{fg=Columbia2}
+\setbeamercolor{frametitle}{fg=Columbia2}
+\setbeamercolor{block title}{bg=Columbia, fg=Columbia2}
+%\setbeamercolor{block body}{fg=Columbia2}
+\setbeamercolor{structure}{fg=Columbia}
+\setbeamercolor{item projected}{fg=white}
+\setbeamercolor{item}{fg=Columbia2}
+\setbeamercolor{subitem}{fg=Columbia2}
+\setbeamercolor{section in toc}{fg=Columbia2}
+\setbeamercolor{description item}{fg=Columbia}
+\setbeamercolor{caption name}{fg=Columbia2}
+\setbeamercolor{button}{fg=Columbia2}
+\usepackage{graphics}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage{multirow, makecell}
+\usepackage{float}
+\usepackage{fancyvrb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{adjustbox}
+\usepackage{threeparttable}
+\usepackage{hyperref}
+\usepackage[scaled=0.92]{helvet}
+\newenvironment{wideitemize}{\itemize\addtolength{\itemsep}{10pt}}{\enditemize}
+\newenvironment{wideenumerate}{\enumerate\addtolength{\itemsep}{10pt}}{\endenumerate}
+%\hypersetup{
+%colorlinks=true,
+%linkcolor=black,
+%filecolor=green, 
+%urlcolor=blue,
+%}
+\beamertemplatenavigationsymbolsempty
+\setbeamercolor{author in head/foot}{bg=Columbia2, fg=white}
+\setbeamercolor{title in head/foot}{bg=Columbia3, fg=white}
+\setbeamercolor{date in head/foot}{bg=Columbia, fg=Columbia2}
+\setbeamercolor{section in head/foot}{bg=Columbia, fg=Columbia2}
+\setbeamercolor{headline}{bg=Columbia}
+\setbeamertemplate{footline}{
+    \leavevmode%
+    \hbox{%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+            \usebeamerfont{author in head/foot}\insertshortauthor
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+            \usebeamerfont{title in head/foot}\insertshorttitle
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+            \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+            \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+        \end{beamercolorbox}}%
+        \vskip0pt%
+    }
+\setbeamercolor{page number in head/foot}{fg=black}
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{subsection in toc}{\leavevmode\leftskip=3em\rlap{\hskip-1.75em\inserttocsectionnumber.\inserttocsubsectionnumber}\inserttocsubsection\par}
+\setbeamerfont{subsection in toc}{size=\footnotesize}
+%\setbeamertemplate{headline}{%
+  %\begin{beamercolorbox}[ht=5.5ex]{section in head/foot}
+    %\vskip2pt\insertnavigation{0.33\paperwidth}\vskip2pt
+  %\end{beamercolorbox}%
+%}
+
+
+\makeatletter
+\let\@@magyar@captionfix\relax
+\makeatother
+
+
+\title[Recitation 6]{Recitation 6} % Change this regularly
+\author[Seung-hun Lee]{Seung-hun Lee}
+\institute[Columbia University]{Columbia University}
+
+\date[]{}
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+%%%%%%%%%%%%% Section 1. 
+
+
+% Capture in one slide
+% Separate slide for questions
+\begin{frame}
+\frametitle{Nonlinear regressors}
+Natural logs
+\begin{itemize}
+\item We might be interested in how the changes in the $X$ in terms of \textit{percentages} affect changes in the dependent variable $Y$. 
+\item (Natural) Log regressors captures the idea of percentage changes. 
+\item Recall from calculus the first order approximation: For any differentiable funtion $f$, and a very small change in $x$, the following relationship holds. 
+\[
+f(x+\Delta x) \simeq f(x)+f'(x)[(x+\Delta x) -x] 
+\]
+\item Define $y=f(x)=\ln{x}$. Then $f(x+\Delta x) = y+\Delta y$ and $f'(x)=\frac{1}{x}$. We then get 
+\[
+\Delta y = \frac{\Delta x}{x}\implies \ln{(x+\Delta x)}-\ln{x} \simeq \frac{\Delta x}{x} \implies \ln\left(1+\frac{\Delta x}{x}\right)\simeq\frac{\Delta x}{x}
+\]
+\item Therefore, the changes in log values allows us to capture changes in percentages, at least for very small amount of change.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Nonlinear regressors}
+Types of log regressions
+\begin{itemize}
+\item\textbf{lin-$\log$}:  Consider the model $Y=\beta_0 + \beta_1 \log{X}+u$.
+\item I take a before and after approach by changing $X$ by $\Delta x$. 
+\item Then the total amount of $Y$ would be $Y+\Delta y$. Formally, 
+\[
+Y+\Delta y = \beta_0 + \beta_1 \log(X+\Delta x)+u
+\]
+Subtract $Y=\beta_0 + \beta_1 \log{X}+u$ from this equation to get
+\[
+\Delta y = \beta_1 \log(X+\Delta x)-\beta_1\log{X} = \beta_1 \log\left(1+\frac{\Delta x}{X} \right) = \beta_1 \frac{\Delta x}{X}
+\]
+\item Therefore, 
+\[
+\beta_1 = \frac{\Delta y}{(\Delta x/X)}
+\]
+Note that the percentage change in $X$ is $\frac{\Delta x}{X} \times 100$. In words, change in $X$ by 1 percent, raises $Y$ by $\beta_1 \times 0.01$. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Nonlinear regressors}
+Types of log regressions
+\begin{itemize}
+\item\textbf{$\log$-lin}: Consider the model $\log{Y}=\beta_0 + \beta_1 X+u$. 
+\item Conduct a similar before and after analysis as we did before to get:
+\[
+\log(Y+\Delta y) = \beta_0 + \beta_1(X+\Delta x)+u
+\]
+\item Then, subtract $\log{Y}=\beta_0 + \beta_1 X+u$. This gets us
+\[
+\log\left(1+\frac{\Delta y}{Y}\right)\simeq \frac{\Delta y}{Y} = \beta_1 \Delta x
+\]
+\item Then, $\beta_1$ can be backed out as
+\[
+\beta_1 = \frac{(\Delta y / Y)}{\Delta x}
+\]
+Again, using the fact that percentage change in $Y$ can be represented as $\frac{\Delta y}{Y}\times 100$. This implies that a 1 unit change in $X$ raises $Y$ by $(100\times \beta_1)\%$. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Nonlinear regressors}
+Types of log regressions
+\begin{itemize}
+\item\textbf{$\log$-$\log$}: Consider the equation $\log{Y} = \beta_0 + \beta_1\log{X}+u$. 
+\item Similar approach allows us to write
+\[
+\log(Y+\Delta y) = \beta_0 + \beta_1 \log(X+\Delta x)+u
+\]
+\item Subtract the original equation to obtain
+\[
+\log\left(1+\frac{\Delta y}{Y}\right)=\beta_1\log\left(1+\frac{\Delta x}{X}\right) \implies \frac{\Delta y}{Y}=\beta_1\frac{\Delta x}{X}
+\]
+\item which implies 
+\[
+\beta_1 = \frac{(\Delta y/Y)}{(\Delta x/X)}
+\]
+This implies that 1\% change in $X$ leads to $\beta_1\%$ change in $Y$. This is the \textit{elasticity} interpretation
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Nonlinear regressors}
+Interaction terms: Motivation
+\begin{itemize}
+\item Suppose that we are interested in the relationship between test scores ($Y$) and class size($X_1$). 
+\item However, one might guess that the effect of class size may differ depending on some other variables. 
+\begin{itemize}
+\item e.g. schools in districts where there are more funding ($X_2$) are more likely to enjoy the benefits of small school classroom
+\end{itemize}
+\item In math, the marginal effect of $X_1$ on $Y$ may depend on $X_2$. 
+\item To capture this idea in a model, we can incorporate an \textbf{interaction term} involving $X_1$ and $X_2$, which can be written as $X_1 \times X_2$ \par\medskip
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Nonlinear regressors}
+Interaction terms
+\begin{itemize}
+\item \textbf{Binary $\times$ Binary: } Suppose that there are two binary variables, $D_1, D_2$.
+\item Notice the regression equation below
+\[
+Y= \beta_0 + \beta_1 D_1 + \beta_2 D_2 + \beta_3 (D_1 \times D_2) + u
+\]  
+\item By now, you know that $\beta_1$ captures the group difference in average for those in group $D_1$ and $\beta_2$ captures the same for those in group $D_2$. 
+\item Note that $D_1 \times D_2$ becomes 1 only individual is in both groups. The average for these individuals are captured by $\beta_3$ coefficient. 
+\item To sum up:
+\begin{itemize}
+\item $E[Y|D_1 = 1] = \beta_0+\beta_1+\beta_2\times D_2+\beta_3\times D_2$
+\item $E[Y|D_1 = 0] = \beta_0+\beta_2\times D_2$
+\item $E[Y|D_1 = 1]-E[Y|D_1 = 0] = \beta_1 + \beta_3\times D_2$
+\end{itemize}
+\item So the effect of $D_1$ differs depending on $D_2$ as well. 
+\item This setup allows us to analyze the difference in effect of binary variable depending on another binary factor. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Nonlinear regressors}
+Interaction terms
+\begin{itemize}
+\item \textbf{Binary $\times$ Continuous: } Instead of a second binary variable, we include a continuous variable $X_1$. 
+\item Now we write
+\[
+Y= \beta_0 + \beta_1 D_1 + \beta_2 X_1 + \beta_3 (D_1 \times X_1) + u
+\]
+\item In earlier example, classroom size would be a continuous variable, so that will be our $X_1$. 
+\item Now, define $D_i=1$ if a school district receives funding and $0$ if otherwise. 
+\item The effect of classroom size would now be 
+\[
+\frac{\partial Y}{\partial X_1} = \beta_2 + \beta_3 D_1
+\]
+\item Now the effect of $X_1$ depends on $D_1$ - whether the district receives funding or not
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Nonlinear regressors}
+Interaction terms
+\begin{itemize}
+\item \textbf{Continuous $\times$ Continuous: } Consider this regression, where both $X_1$ and $X_2$ are continuous variables. 
+\[
+Y = \beta_0 + \beta_1X_1 + \beta_2 X_2 + \beta_3 (X_1\times X_2)+u
+\] 
+\item In this equation, the effect of $X_1$ on $Y$, and that for $X_2$ on $Y$ are
+\[
+\frac{\partial Y}{\partial X_1} = \beta_1 + \beta_3 X_2 \ \ \ \ \frac{\partial Y}{\partial X_2} = \beta_2 + \beta_3 X_1 
+\]
+\item Now you see that the marginal impact of $X_1$ on $Y$ is dependent of $X_2$. 
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Assessing the regression}
+Internal and external validity
+\begin{itemize}
+\item \textbf{External validity} is concerned with the applicability of the regression model to other contexts. 
+\begin{itemize}
+\item For instance, you may wonder whether regression model from schools in California could explain what happens in the classrooms in South Korea
+\item Any critiques to the model questioning the replicability of the  result to other dataset is assessing the externali validity. 
+\end{itemize}
+\item \textbf{Internal validity} assesses the model from the point of view of the population being studied. 
+\begin{itemize}
+\item This approaches questions the validity of the statistical inference within the given dataset. There are five threats to internal validity.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Assessing the regression}
+5 Internal validity threats
+\begin{itemize}
+\item \textbf{Omitted variable bias: } Did the researcher left out factors that could affect $Y$ and are correlated with $X$? 
+\item \textbf{Wrong functional form: } Did the researcher incorporate $X$ in a proper functional form? (quadratic, logs?)
+\item \textbf{Errors in variables bias: } Measurement error. If $X$ does not have a clear cut measure, part of $X$ correlated to $Y$ and the observed version of $X$ is left out, resulting in similar problems with the case of OVB.
+\item \textbf{Sample selection bias: }  If certain groups are more likely to not respond, then the data fails to represent population and the estimates based on this data is biased.
+\item \textbf{Simultaneous causality bias: } There are cases where $Y$ causes $X$ too, also leading to the bias (consider supply and demand)
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%
+\end{document}

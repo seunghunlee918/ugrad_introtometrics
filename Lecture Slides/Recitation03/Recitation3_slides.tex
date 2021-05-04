@@ -1,0 +1,337 @@
+\documentclass[compress]{beamer}
+
+\mode<presentation>
+\usetheme{Madrid}
+\definecolor{Columbia}{RGB}{185,217,235}
+\definecolor{Columbia2}{RGB}{0,51,160}
+\definecolor{Columbia3}{RGB}{0,114,206}
+\setbeamercolor{title}{fg=Columbia2}
+\setbeamercolor{frametitle}{fg=Columbia2}
+\setbeamercolor{block title}{bg=Columbia, fg=Columbia2}
+%\setbeamercolor{block body}{fg=Columbia2}
+\setbeamercolor{structure}{fg=Columbia}
+\setbeamercolor{item projected}{fg=white}
+\setbeamercolor{item}{fg=Columbia2}
+\setbeamercolor{subitem}{fg=Columbia2}
+\setbeamercolor{section in toc}{fg=Columbia2}
+\setbeamercolor{description item}{fg=Columbia}
+\setbeamercolor{caption name}{fg=Columbia2}
+\setbeamercolor{button}{fg=Columbia2}
+\usepackage{graphics}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage{multirow, makecell}
+\usepackage{float}
+\usepackage{fancyvrb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{adjustbox}
+\usepackage{threeparttable}
+\usepackage{hyperref}
+\usepackage[scaled=0.92]{helvet}
+\newenvironment{wideitemize}{\itemize\addtolength{\itemsep}{10pt}}{\enditemize}
+\newenvironment{wideenumerate}{\enumerate\addtolength{\itemsep}{10pt}}{\endenumerate}
+%\hypersetup{
+%colorlinks=true,
+%linkcolor=black,
+%filecolor=green, 
+%urlcolor=blue,
+%}
+\beamertemplatenavigationsymbolsempty
+\setbeamercolor{author in head/foot}{bg=Columbia2, fg=white}
+\setbeamercolor{title in head/foot}{bg=Columbia3, fg=white}
+\setbeamercolor{date in head/foot}{bg=Columbia, fg=Columbia2}
+\setbeamercolor{section in head/foot}{bg=Columbia, fg=Columbia2}
+\setbeamercolor{headline}{bg=Columbia}
+\setbeamertemplate{footline}{
+    \leavevmode%
+    \hbox{%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+            \usebeamerfont{author in head/foot}\insertshortauthor
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+            \usebeamerfont{title in head/foot}\insertshorttitle
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+            \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+            \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+        \end{beamercolorbox}}%
+        \vskip0pt%
+    }
+\setbeamercolor{page number in head/foot}{fg=black}
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{subsection in toc}{\leavevmode\leftskip=3em\rlap{\hskip-1.75em\inserttocsectionnumber.\inserttocsubsectionnumber}\inserttocsubsection\par}
+\setbeamerfont{subsection in toc}{size=\footnotesize}
+%\setbeamertemplate{headline}{%
+  %\begin{beamercolorbox}[ht=5.5ex]{section in head/foot}
+    %\vskip2pt\insertnavigation{0.33\paperwidth}\vskip2pt
+  %\end{beamercolorbox}%
+%}
+
+
+\makeatletter
+\let\@@magyar@captionfix\relax
+\makeatother
+
+
+\title[Recitation 3]{Recitation 3} % Change this regularly
+\author[Seung-hun Lee]{Seung-hun Lee}
+\institute[Columbia University]{Columbia University}
+
+\date[]{}
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+%%%%%%%%%%%%% Section 1. 
+
+
+% Capture in one slide
+% Separate slide for questions
+
+
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+Assumptions
+\begin{itemize}
+\item For OLS to be unbiased, consistent, efficient, and asymptotic normal, the following assumptions must be made
+\begin{block}{Assumptions}
+\begin{itemize}
+\item[\textbf{A1}] Linearity: The regression is assumed to be linear in parameters.
+\[
+\text{Okay: } Y_i = \beta_0 + \beta_1X_i + \beta_2X_i^2+u_i \ \ \text{Not: } Y_i = \beta_0 + \beta_1X_i + \beta_2^2X_i+u_i,
+\]
+
+\item[\textbf{A2}] $E(u_i|X_i)=0$: Conditional on $X_i$ taking a certain value, we are not making any systematical error in the linear regression, required condition for unbiasedness. 
+\item[\textbf{A3}] Homoskedasticity: $var(u_i)=\sigma_2$, or variance of $u_i$ does not depend on $X_i$. If this condition is broken, there exists a \textit{heteroskedasticity}
+\item[\textbf{A4}] No Autocorrelation (Serial Correlation): For $i\neq j$, $cov(u_i,u_j)=0$. Error at the previous period does not have any impact on the current period. This is usually broken in time series settings, where the error in the previous period carries over to the next period.
+\end{itemize}
+\end{block}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+Assumptions
+\begin{block}{Assumptions (Continued)}
+\begin{itemize}
+\item[\textbf{A5}] Orthogonality: $cov(X_i,u_i)=0$. The error term and the independent variable is uncorrelated. If otherwise, there exists an \textit{endogeneity}.
+
+\item[\textbf{A6}] $n>K$: There should be more observations than independent variables.
+\item[\textbf{A7}] Variability in $X$: Independent variables should take somewhat different values for each observation. 
+\item[\textbf{A8}] Correct Specification: The model has all the necessary independent variables in a correct functional form.
+\item[\textbf{A9}] No perfect multicollinearity: If one of the $X_i$ variable is a linear combination of other variables, some of these variables are not estimated.
+\item[\textbf{A10}] i.i.d.: $(X_i,Y_i)$ is assumed to be from independent, identical distribution
+
+\item[\textbf{A11}] No Outliers: Outlier has no impact on the regression results.
+
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+Measure of fitness
+\begin{itemize}
+\item These numbers tell us how informative the sample linear regression we used is in telling us about the population data
+\item $\mathbf{R^2}$: It is defined as a fraction of total variation which is explained by the model. Mathematically, this is
+\begin{gather*}
+Y_i = \underbrace{\hat{\beta}_0 + \hat{\beta}_1X_i}_{\hat{Y}_i} + \hat{u}_i, \ \bar{Y} = \hat{\beta}_0 + \hat{\beta}_1\bar{X} + \bar{\hat{u}}, \\
+\implies Y_i-\bar{Y} = (\hat{Y}_i - \bar{Y}) + \hat{u}_i \\
+\implies \sum_{i=1}^n (Y_i-\bar{Y})^2= \sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2+\sum_{i=1}^n\hat{u}_i^2 + 2\sum_{i=1}^n(\hat{Y}_i - \bar{Y}) \hat{u}_i
+\end{gather*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+Measure of fitness
+\begin{itemize}
+\item Note that 
+\[
+\sum_{i=1}^n(\hat{Y}_i - \bar{Y}) \hat{u}_i=\sum_{i=1}^n\hat{Y}_i{\hat{u}}_i-\bar{Y}\sum_{i=1}^n\hat{u}_i  =0
+\]
+This is because 
+\begin{itemize}
+\item The conditional mean of error $u_i$ is assumed to be 0 (A2), 
+\item The covariance between $X_i$ and $u_i$ is 0 (A5), 
+\end{itemize}
+\item So we are left with
+\[
+\underbrace{\sum_{i=1}^n (Y_i-\bar{Y})^2}_{TSS}= \underbrace{\sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2}_{ESS}+\underbrace{\sum_{i=1}^n\hat{u}_i}_{RSS} 
+\]
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+Measure of fitness
+\begin{itemize}
+\item The above is equivalent to 
+\[
+1=\underbrace{\frac{\sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2}{\sum_{i=1}^n (Y_i-\bar{Y})^2}}_{R^2} + \underbrace{\frac{\sum_{i=1}^n\hat{u}_i ^2 }{\sum_{i=1}^n (Y_i-\bar{Y})^2}}_{\frac{RSS}{TSS}}
+\]
+\item Thus, the $R^2$ can be found as
+\[
+R^2 = \frac{\sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2}{\sum_{i=1}^n (Y_i-\bar{Y})^2} = \frac{ESS}{TSS} = 1-\frac{RSS}{TSS}
+\]
+\item Intuitively, higher $R^2$ implies that the model explains more of the total variance, which implies that the regression fits the data well. 
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+Measure of fitness
+\begin{itemize}
+\item $\mathbf{SER}$: Standard Error of Regression. It estimate the standard deviation of the error term in $Y_i$, or mathematically
+\[
+SER = \sqrt{\frac{1}{n-2}\sum_{i=1}^n \hat{u}_i^2}
+\]
+we use $n-2$ since there is loss of d.f. by two due to $\hat{\beta}_0, \hat{\beta}_1$.\\
+ If SER is large, our model might be missing a key variable.
+ \item \textbf{RMSE}: Root mean squared error. Similar to SER in looks, 
+\[
+RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^n \hat{u}_i^2}
+\]
+this is used to assess the accuracy of the predictions.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+Sampling distribution 
+\begin{itemize}
+\item OLS estimate that we are getting is a random variable - getting different estimates depending on sample we work with. 
+\item$\hat{\beta}_1$: Recall that we can write
+\[
+\hat{\beta}_1= \frac{\sum_{i=1}^n(X_i-\bar{X})(Y_i-\bar{Y})}{\sum_{i=1}^n(X_i-\bar{X})^2}
+\]
+Now, replace $Y_i$ an $\bar{Y}$ with 
+\[
+Y_i =\beta_0 + \beta X_i + u_i, \ \bar{Y} = \beta_0 + \beta_1\bar{X} + \bar{u},
+\]
+which allows us to write 
+\[
+(Y_i-\bar{Y}) = (\beta_1(X_i-\bar{X})+(u_i-\bar{u}))
+\]
+and get
+\[
+\hat{\beta}_1=\beta_1+  \frac{\sum_{i=1}^n(X_i-\bar{X})(u_i-\bar{u})}{\sum_{i=1}^n(X_i-\bar{X})^2}
+\]
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+\begin{itemize}
+\item $E[\hat{\beta}_1]$: It can be written as
+\small{\[
+\begin{aligned}
+E[\hat{\beta}_1]& = E\left[\beta_1+  \frac{\sum_{i=1}^n(X_i-\bar{X})(u_i-\bar{u})}{\sum_{i=1}^n(X_i-\bar{X})^2}\right]\\
+&=\beta_1+ E\left[\frac{\sum_{i=1}^n(X_i-\bar{X})(u_i-\bar{u})}{\sum_{i=1}^n(X_i-\bar{X})^2}\right]
+\end{aligned}
+\]}\normalsize
+$\sum_{i=1}^n(X_i-\bar{X})(u_i-\bar{u})$ can be written to something simpler.
+\small{\[
+\sum_{i=1}^n(X_i-\bar{X})(u_i-\bar{u})=\sum_{i=1}^nX_iu_i-\bar{u}\sum_{i=1}^n X_i+\bar{X}\sum_{i=1}^nu_i+n\bar{X}\bar{u}
+\]}\normalsize
+\item[$\to$] Since $\bar{X}$ is a sample mean of $X$, $\sum_{i=1}^nX_i=n\bar{X}$. \\
+\item[$\to$] The assumption that conditional mean is zero and $(X_i, u_i)$ are uncorrelated means that the term on the left hand side is zero. 
+\item[$\to$] Therefore, UNDER CLASSICAL ASSUMPTIONS, $E[\hat{\beta}_1]=\beta_1$.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+\begin{itemize}
+\item $var[\hat{\beta}_1]$: We use the definition of the variances and the fact that the expected value of $\hat{\beta}_1$ is unbiased (at least for now) to get
+\[
+\begin{aligned}
+var(\hat{\beta}_1)&=E\left[\left(\hat{\beta}_1-E[\hat{\beta}_1]\right)^2\right] \\
+&=E\left[\left(\hat{\beta}_1-{\beta}_1\right)^2\right]\\
+&=E\left[\left( \frac{\sum_{i=1}^n(X_i-\bar{X})(u_i-\bar{u})}{\sum_{i=1}^n(X_i-\bar{X})^2} \right)^2\right]\\
+&=E\left[\left(  \frac{(X_1-\bar{X})(u_1-\bar{u})}{\sum_{i=1}^n(X_i-\bar{X})^2}+...+\frac{(X_n-\bar{X})(u_n-\bar{u})}{\sum_{i=1}^n(X_i-\bar{X})^2} \right)^2\right]\\
+\end{aligned}
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+\begin{itemize}
+\item[$\to$] We assume homoskedasticity and no autocorrelation
+\item[$\to$] Since $X_i$ is from the data and $u_i$ is a random error term, we can take all the $X_i$ terms in and keep the $u_i$ terms in the expectation to get (i.i.d assumption is also useful here)
+\[
+\begin{aligned}
+var(\hat{\beta}_1)&=\frac{\sum_{i=1}^n(X_i-\bar{X})^2E[(u_i-\bar{u})^2]}{[\sum_{i=1}^n(X_i-\bar{X})^2]^2}\\
+&=\frac{\sum_{i=1}^n(X_i-\bar{X})^2\sigma_u^2}{[\sum_{i=1}^n(X_i-\bar{X})^2]^2} \ (\because E[(u_i-\bar{u})^2=var(u_i))\\
+&=\sigma_u^2\frac{\sum_{i=1}^n(X_i-\bar{X})^2}{[\sum_{i=1}^n(X_i-\bar{X})^2]^2} =\frac{\sigma_u^2}{\sum_{i=1}^n(X_i-\bar{X})^2}
+\end{aligned}
+\]
+Note that  to decrease the variance in the estimates, the variance of the error should be small relative to the variation in the $X_i$. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+\begin{itemize}
+\item $\hat{\beta}_0$: The formula for $\hat{\beta}_0$ is $\bar{Y}-\hat{\beta}_1\bar{X}$. By changing $\bar{Y}$, we can get
+\[
+\begin{aligned}
+\hat{\beta}_0&=(\beta_0+\beta_1\bar{X}+\bar{u})-\hat{\beta}_1\bar{X}\\
+&=\beta_0+(\beta_1-\hat{\beta}_1)\bar{X}+\bar{u}
+\end{aligned}
+\]
+Then we can say the following about the sampling distribution
+\item $E[\hat{\beta}_0]$: We can write
+\[
+E[\hat{\beta}_0]=\beta_0+E[(\beta_1-\hat{\beta}_1)\bar{X}]+E[\bar{u}]=\beta_0
+\]
+since $\hat{\beta}_1$ is unbiased and conditional expectation of $u_i$ is zero. 
+\item[$\to$]Thus, under our current assumptions, $\hat{\beta}_0$ is unbiased. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+\begin{itemize}
+\item $var[\hat{\beta}_0]$: Using the definition of the variance, we can write \[
+\begin{aligned}
+var(\hat{\beta}_0)&=E\left[\left(\hat{\beta}_0-E[\hat{\beta}_0]\right)^2\right] =E\left[\left(\hat{\beta}_0-{\beta}_0\right)^2\right]\\
+&=E\left[\left( (\beta_1-\hat{\beta}_1)\bar{X}+\bar{u}\right)^2\right]\\
+&=\bar{X}^2E\left[\left(\beta_1-\hat{\beta}_1 \right)^2\right]+ 2\bar{X}E\left[\left(\beta_1-\hat{\beta}_1 \right)\bar{u}\right] + E[\bar{u}^2]
+\end{aligned}
+\]
+Under the assumption (A2), we can ignore the middle term as this is zero. The rest of the terms are $\bar{X}^2 var(\hat{\beta}_1)$ and $\frac{\sigma_u^2}{n}$. the final result is
+\[
+var(\hat{\beta}_0)=\frac{\sigma_u^2\bar{X}^2}{\sum_{i=1}^n(X_i-\bar{X})^2}+\frac{\sigma_u^2}{n}= \frac{\sigma_u^2}{n}\frac{\sum_{i=1}^nX_i^2}{\sum_{i=1}^n(X_i-\bar{X})^2}
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordinary Least Squares}
+So what do we take away?
+\begin{itemize}
+\item At the end of the day, we can say
+\begin{gather*}
+ \hat{\beta}_1 \sim N\left(\beta_1, \frac{\sigma_u^2}{\sum_{i=1}^n(X_i-\bar{X})^2}\right) \\
+\hat{\beta}_0 \sim N\left(\beta_0, \frac{\sigma_u^2}{n}\frac{\sum_{i=1}^nX_i^2}{\sum_{i=1}^n(X_i-\bar{X})^2}\right)
+\end{gather*}
+\item The importance of this is that now we can conduct a hypothesis test and create a test statistic based on this distribution
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%
+\end{document}
